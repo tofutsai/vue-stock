@@ -28,7 +28,7 @@ import overlay from "@/layout/overlay.vue";
 export default {
   data: () => ({}),
   components: {
-    "appBar":appBar,
+    appBar,
     bottomSheet,
     alert,
     confirm,

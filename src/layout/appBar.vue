@@ -19,9 +19,15 @@
     <!-- 自動填滿左右區塊 分配父子组件之间的剩餘寬度。 當一個 v-spacer 放置在子组件之前或之后时，组件将推到其容器的左右两侧。-->
 
     <!-- 登出位置 -->
-    <v-btn icon color="cyan">
-      <v-icon>mdi-logout</v-icon>
-    </v-btn>
+    <v-tooltip top>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon color="cyan" v-bind="attrs" v-on="on">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
+      </template>
+      <span>登出</span>
+    </v-tooltip>
+
     <!-- 行動選單位置 -->
     <v-app-bar-nav-icon
       class="hidden-md-and-up"

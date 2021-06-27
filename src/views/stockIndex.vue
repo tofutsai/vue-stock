@@ -2,13 +2,13 @@
   <div>
     <!-- 查詢條件區域 -->
     <v-container fluid class="grey darken-3 pa-2 mb-1">
-      <h5 class="blue--text mb-1">
+      <h5 class="red--text mb-1">
         索引清單, 查詢結果: {{ grid.dataLength | formatCommas }}
       </h5>
       <v-row dense>
         <v-col cols="3" md="2">
           <v-select
-            label="上市別"
+            label="市場別"
             :items="selectItems.type"
             v-model="formSearch.type"
           ></v-select>
@@ -30,7 +30,7 @@
                 dark
                 small
                 color="blue"
-                @click="actStockIndexRead()"
+                @click="actStockIndexRead(true)"
               >
                 <v-icon dark> mdi-magnify </v-icon>
               </v-btn>
@@ -135,7 +135,7 @@
           v-if="action == 'Create'"
           class="grey lighten-3  blue--text headline"
         >
-          新增StockIndex
+          新增股票索引
         </v-card-title>
         <v-card-title v-else class="grey lighten-3 blue--text headline">
           更新股票索引

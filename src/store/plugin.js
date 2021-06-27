@@ -15,6 +15,9 @@ const Plugin = {
       formatDate(v) {
         return Plugin.formatDate(v);
       },
+      formatDatetoMD(v) {
+        return Plugin.formatDatetoMD(v);
+      },
       xformat(v) {
         return Plugin.xformat(v);
       },
@@ -32,7 +35,7 @@ const Plugin = {
       return JSON.parse(UserInfo);
     } else {
       const UserInfo = {
-        id: 1,
+        id: 4,
         account: "tofu",
         name: "MR TOFU",
       };
@@ -52,6 +55,17 @@ const Plugin = {
   formatDate(value, split = "/") {
     if (value && value != "0") {
       let d = moment(value).format(`YYYY${split}MM${split}DD`);
+      if (d != "Invalid date") value = d;
+    }
+
+    if (value == "00000000") {
+      value = "0000-00-00";
+    }
+    return value;
+  },
+  formatDatetoMD(value, split = "/") {
+    if (value && value != "0") {
+      let d = moment(value).format(`MM${split}DD`);
       if (d != "Invalid date") value = d;
     }
 

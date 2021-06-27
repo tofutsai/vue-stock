@@ -2,7 +2,7 @@
   <div>
     <!-- 查詢條件區域 -->
     <v-container fluid class="grey darken-3 pa-2 mb-1">
-      <h5 class="blue--text mb-1">
+      <h5 class="red--text mb-1">
         個股資訊, 查詢結果: {{ grid.dataLength | formatCommas }}
       </h5>
       <v-row dense>
@@ -23,6 +23,8 @@
         <v-col cols="6" md="2" class="pt-3">
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
+              <!--把v-組件裡面的獲取到的屬性集合attrs(相當於props對象)和事件集合on(相當於事件對象)傳入到了v-btn組件中
+              該語法將一個或多個屬性和一個或多個事件綁定到該元素 -->
               <v-btn
                 v-bind="attrs"
                 v-on="on"
@@ -31,7 +33,7 @@
                 dark
                 small
                 color="green"
-                @click="actStockDataRead()"
+                @click="actStockDataRead(true)"
               >
                 <v-icon dark> mdi-magnify </v-icon>
               </v-btn>
@@ -116,11 +118,11 @@
           class="blue--text"
           @click="actStockDataSet(item), mtdDialog(true), (action = 'Edit')"
         > -->
-          {{ item.code }}
+        {{ item.code }}
         <!-- </a> -->
       </template>
       <template v-slot:[`item.dataDate`]="{ item }">
-        <span style="color:cyan;"> 
+        <span style="color:cyan;">
           {{ item.dataDate | formatDate }}
         </span>
       </template>
