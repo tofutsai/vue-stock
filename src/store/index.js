@@ -3,7 +3,8 @@ import Vuex from "vuex";
 import global from "./global.js";
 import stockIndex from "./modules/stockIndex.js";
 import stockData from "./modules/stockData.js";
-
+import stockStatistics from "./modules/stockStatistics.js";
+import stockFavorite from "./modules/stockFavorite.js"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -11,6 +12,8 @@ const store = new Vuex.Store({
     global,
     stockIndex,
     stockData,
+    stockStatistics,
+    stockFavorite,
   },
 });
 

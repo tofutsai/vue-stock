@@ -17,6 +17,7 @@ const state = {
       dataDate: PG.getNowDate(-1, "D"),
       isEnable: true,
     },
+    grid:grids.gridStockData,
   },
   selectItems: {
     type: [
@@ -131,7 +132,7 @@ const mutations = {
   mutInit(state) {  //中斷state連接，先序列化再轉成物件
     state.formSearch = JSON.parse(JSON.stringify(state.init.formSearch));
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
-    state.grid = JSON.parse(JSON.stringify(grids.gridStockData));
+    state.grid = JSON.parse(JSON.stringify(state.init.grid));
   },
   mutInitFormData(state) {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));

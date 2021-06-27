@@ -17,6 +17,7 @@ const state = {
       dataDate: PG.getNowDate(-1, "D"),
       isEnable: true,
     },
+    grid: grids.gridStockIndex,
   },
   selectItems: {
     type: [
@@ -91,9 +92,9 @@ const actions = {
 
     f.operId = PG.getOper().id;
     axiosAPI.instance
-      .post("/api/UpdateStockIndex", f)
+      .post("/api/EditStockIndex", f)
       .then((res) => {
-        console.log("/api/UpdateStockIndex", res.data);
+        console.log("/api/EditStockIndex", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockIndexRead({ commit });
@@ -132,7 +133,7 @@ const mutations = {
   mutInit(state) {
     state.formSearch = JSON.parse(JSON.stringify(state.init.formSearch));
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
-    state.grid = JSON.parse(JSON.stringify(grids.gridStockIndex));
+    state.grid = JSON.parse(JSON.stringify(state.init.grid));
   },
   mutInitFormData(state) {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
