@@ -301,4 +301,96 @@ export default {
     data: [{}],
     dataLength: 0,
   },
+  gridStockProfit: {
+    footerProps: {
+      "items-per-page-options": [50, 300, 500, 2000],
+      "items-per-page-text": "每頁筆數",
+    },
+    options: {
+      page: 1,
+      itemsPerPage: 50,
+      sortBy: ["id"],
+      sortDesc: [false],
+      groupBy: [],
+      groupDesc: [],
+      mustSort: false,
+      multiSort: false,
+    },
+    headers: [
+      {
+        text: "",
+        value: "ctrl",
+        sortable: false,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "股票代碼",
+        value: "code",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "公司名稱",
+        value: "company",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "相對位置",
+        value: "position",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "目前價格",
+        value: "closePrice",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "買進價格",
+        value: "buyPrice",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "買進股數",
+        value: "buyShares",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "買進成本",
+        value: "buyCost",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "預估損益",
+        value: "profit",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "預估損益%",
+        value: "profitPercentage",
+        sortable: true,
+        class: "grey darken-1 ",
+      },
+    ],
+    data: [{}],
+    dataLength: 0,
+  },
+  gridStockMemo:{
+    data:[{}],
+    dataLength:0,
+  },
+  gridStockDownload:{
+    data:[{}],
+    dataLength:0,
+  },
+  gridConfig:{
+    data:[{}],
+    dataLength:0,
+  },
 };

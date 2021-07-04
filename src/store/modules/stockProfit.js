@@ -1,5 +1,6 @@
 import axiosAPI from "@/store/axiosAPI.js";
 import PG from "@/store/plugin.js";
+import axios from "axios";
 import grids from "./grids.js";
 
 const state = {
@@ -16,19 +17,18 @@ const state = {
       company: "",
       dataDate: PG.getNowDate(-1, "D"),
       isEnable: true,
+      buyPrice:0,
+      buyShares:0,
     },
-    grid: grids.gridStockIndex,
+    grid: grids.gridStockProfit,
   },
-  selectItems: {
-    type: [
-      { text: "上市+上櫃", value: "上" },
-      { text: "上市", value: "上市" },
-      { text: "上櫃", value: "上櫃" },
-    ],
-  },
-  formSearch: {},
+  selectItems: {},
+  formSearsh: {},
   formData: {},
   grid: {},
+  buyCostSum:0,
+  profitSum:0,
+  profitSumPercentage:0,
 };
 
 const getters = {};
@@ -40,24 +40,28 @@ const actions = {
   actInitFormData({ commit }) {
     commit("mutInitFormData");
   },
-  actStockIndexRead({ commit }, isManual) {//isManual手動查詢要清空grid設定
+  actStockProfitRead({ commit }, isManual) {
     if (isManual) {
-      state.grid.options.page = grids.gridStockIndex.options.page;
+      state.grid.options.page = grids.gridStockProfit.options.page;
       state.grid.options.itemsPerPage =
-        grids.gridStockIndex.options.itemsPerPage;
+        grids.gridStockProfit.options.itemsPerPage;
     }
 
     state.grid.data = [{}];
     const f = state.formSearch;
     f.options = state.grid.options;
+    f.operId = PG.getOper().id;
 
     axiosAPI.instance
-      .post("/api/ReadStockIndex", f)
+      .post("/api/ReadStockProfit", f)
       .then((res) => {
-        console.log("/api/ReadStockIndex", res.data);
+        console.log("/api/ReadStockProfit", res.data);
         if (res.data.Success) {
           commit("mutGrid", res.data);
-        } else {
+          commit("buyCostSum", res.data);
+          commit("profitSum", res.data);
+          commit("profitSumPercentage", res.data);
+        }else {
           PG.setSnackBar(res.data.Message);
         }
       })
@@ -65,20 +69,22 @@ const actions = {
         console.log("error", error);
       });
   },
-  actStockIndexSet({ commit }, payload) {
-    commit("mutStockIndexSet", payload);
+  actStockProfitSet({ commit }, payload) {
+    commit("mutStockProfitSet", payload);
   },
-  actStockIndexCreate({ commit }) {
+  actStockProfitCreate({ commit }, payload) {
     const f = state.formData;
-
+    f.code = payload;
     f.operId = PG.getOper().id;
+
     axiosAPI.instance
-      .post("/api/CreateStockIndex", f)
+      .post("/api/CreateStockProfit", f)
       .then((res) => {
-        console.log("/api/CreateStockIndex", res.data);
+        console.log("/api/CreateStockProfit", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
-          actions.actStockIndexRead({ commit });
+          actions.actStockProfitRead({ commit });
+          actions.actInitFormData({commit});
         } else {
           PG.setSnackBar(res.data.Message);
         }
@@ -87,37 +93,17 @@ const actions = {
         console.log("error", error);
       });
   },
-  actStockIndexEdit({ commit }) {
-    const f = state.formData;
-
-    f.operId = PG.getOper().id;
-    axiosAPI.instance
-      .post("/api/EditStockIndex", f)
-      .then((res) => {
-        console.log("/api/EditStockIndex", res.data);
-        if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
-          actions.actStockIndexRead({ commit });
-        } else {
-          PG.setSnackBar(res.data.Message);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  },
-  actStockIndexDelete({ commit }, payload) {
-    // PG.setConfirm("AAAA?", ()=>{        } );
-    PG.setConfirm(`確認是否刪除 id:${payload.code} ?`, () => {
+  actStockProfitDelete({ commit }, payload) {
+    PG.setConfirm(`確認是否刪除 code:${payload.code} ?`, () => {
       const f = { id: payload.id };
+      f.operId = PG.getOper().id;
 
       axiosAPI.instance
-        .post("/api/DeleteStockIndex", f)
+        .post("/api/DeleteStockProfit", f)
         .then((res) => {
-          console.log("/api/DeleteStockIndex", res.data);
           if (res.data.Success) {
             PG.setSnackBar(res.data.Message, "success");
-            actions.actStockIndexRead({ commit });
+            actions.actStockProfitRead({ commit });
           } else {
             PG.setSnackBar(res.data.Message);
           }
@@ -138,7 +124,7 @@ const mutations = {
   mutInitFormData(state) {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
   },
-  mutStockIndexSet(state, payload) {
+  mutStockProfitSet(state, payload) {
     state.formData = JSON.parse(JSON.stringify(payload));
     state.formData.dataDate = PG.formatDate(state.formData.dataDate, "-");
   },
@@ -146,6 +132,22 @@ const mutations = {
     state.grid.data = data.Data;
     state.grid.dataLength = data.TotalCount;
   },
+  buyCostSum(state, data){
+    var buyCostArr = data.Data.map(el=>el.buyCost); //使用 map 將物件屬性轉為陣列
+    state.buyCostSum = buyCostArr.length != 0 ? buyCostArr.reduce((a,b)=>a+b) : 0;  //透過 reduce 加總
+  },
+  profitSum(state, data){
+    var profitArr = data.Data.map(el => el.profit);
+    state.profitSum = profitArr.length != 0 ? profitArr.reduce((a,b)=>a+b) : 0;
+  },
+  profitSumPercentage(state, data){
+    var buyCostArr = data.Data.map(el=>el.buyCost);
+    var buyCostSum = buyCostArr.length != 0 ? buyCostArr.reduce((a,b)=>a+b) : 0;
+    var profitArr = data.Data.map(el => el.profit);
+    var profitSum = profitArr.length != 0 ? profitArr.reduce((a,b)=>a+b) : 0;
+    var profitPercentage = ((profitSum / buyCostSum) * 100).toFixed(2);
+    state.profitSumPercentage = profitPercentage != "NaN" ? profitPercentage : 0;
+  }
 };
 
 export default {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import PG from "./plugin.js";
-//Request Config設定， baseURL是API的主要Domain，只後發請求時只要填相對路徑就可以了
+//Request Config設定， baseURL是API的主要Domain，之後發請求時只要填相對路徑就可以了
 var instance = axios.create({
   headers: {
     "Content-Type": "application/json; charset=utf-8",

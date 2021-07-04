@@ -5,6 +5,9 @@ import stockIndex from "./modules/stockIndex.js";
 import stockData from "./modules/stockData.js";
 import stockStatistics from "./modules/stockStatistics.js";
 import stockFavorite from "./modules/stockFavorite.js"
+import stockProfit from "./modules/stockProfit.js"
+import stockMemo from "./modules/stockMemo.js"
+import stockDownload from "./modules/stockDownload.js"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -14,6 +17,9 @@ const store = new Vuex.Store({
     stockData,
     stockStatistics,
     stockFavorite,
+    stockProfit,
+    stockMemo,
+    stockDownload,
   },
 });
 

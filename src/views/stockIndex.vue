@@ -129,7 +129,7 @@
     </v-data-table>
 
     <!-- 跳窗顯示區域 -->
-    <v-dialog v-model="dialog" persistent max-width="40%">
+    <v-dialog v-model="dialog" persistent max-width="360px">
       <v-card>
         <v-card-title
           v-if="action == 'Create'"
@@ -140,7 +140,7 @@
         <v-card-title v-else class="grey lighten-3 blue--text headline">
           更新股票索引
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="grey darken-3">
           <v-row>
             <v-col cols="6">
               <v-select
@@ -175,7 +175,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="grey darken-3">
           <v-spacer />
 
           <v-btn color="grey" @click="mtdDialog(false)" outlined>
