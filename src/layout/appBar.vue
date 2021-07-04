@@ -51,7 +51,7 @@ export default {
           icon: "mdi-view-dashboard",
         },
         {
-          path: "/download",
+          path: "/stockDownload",
           text: "股價下載計算",
           icon: "mdi-chart-box",
         },
@@ -99,9 +99,4 @@ export default {
     },
   },
 };
-
-// const s = "JERRY";
-// let msg = "";
-// msg = "HEELO! " + s + " welcome~";
-// msg =`HELLO! ${s} welcome~`;
 </script>

@@ -9,7 +9,7 @@ const state = {
       type: "上",
       shares:"1",
       closePrice:"0.0",
-      position2:"30",
+      position2:"50",
       code: "",
     },
     formData: {
@@ -19,8 +19,11 @@ const state = {
       company: "",
       dataDate: PG.getNowDate(-1, "D"),
       isEnable: true,
+      buyPrice:0,
+      buyShares:0,
     },
     grid:grids.gridStockStatistics,
+    gridConfig:grids.gridConfig,
   },
   selectItems: {
     type: [
@@ -164,6 +167,27 @@ const actions = {
         });
     });
   },
+  actStockProfitCreate({ commit }, payload) {
+    const f = state.formData;
+    f.code = payload;
+    f.operId = PG.getOper().id;
+
+    axiosAPI.instance
+      .post("/api/CreateStockProfit", f)
+      .then((res) => {
+        console.log("/api/CreateStockProfit", res.data);
+        if (res.data.Success) {
+          PG.setSnackBar(res.data.Message, "success");
+          actions.actStockProfitRead({ commit });
+          actions.actInitFormData({commit});
+        } else {
+          PG.setSnackBar(res.data.Message);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }
 };
 
 const mutations = {
@@ -171,6 +195,7 @@ const mutations = {
     state.formSearch = JSON.parse(JSON.stringify(state.init.formSearch));
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
     state.grid = JSON.parse(JSON.stringify(state.init.grid));
+    state.gridConfig = JSON.parse(JSON.stringify(state.init.gridConfig));
   },
   mutInitFormData(state) {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));

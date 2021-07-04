@@ -17,6 +17,8 @@ const state = {
       company: "",
       dataDate: PG.getNowDate(-1, "D"),
       isEnable: true,
+      buyPrice:0,
+      buyShares:0,
     },
     grid: grids.gridStockFavorite,
   },
@@ -125,6 +127,27 @@ const actions = {
         });
     });
   },
+  actStockProfitCreate({ commit }, payload) {
+    const f = state.formData;
+    f.code = payload;
+    f.operId = PG.getOper().id;
+
+    axiosAPI.instance
+      .post("/api/CreateStockProfit", f)
+      .then((res) => {
+        console.log("/api/CreateStockProfit", res.data);
+        if (res.data.Success) {
+          PG.setSnackBar(res.data.Message, "success");
+          actions.actStockProfitRead({ commit });
+          actions.actInitFormData({commit});
+        } else {
+          PG.setSnackBar(res.data.Message);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }
 };
 
 const mutations = {
@@ -139,6 +162,8 @@ const mutations = {
     mutStockFavoriteSet(state, payload){
         state.formData = JSON.parse(JSON.stringify(payload));
         state.formData.dataDate = PG.formatDate(state.formData.dataDate, "-");
+        state.formData.buyPrice = 0;
+        state.formData.buyShares = 0;
     },
     mutGrid(state, data) {
       state.grid.data = data.Data;

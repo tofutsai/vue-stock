@@ -24,7 +24,8 @@
                 small
                 color="blue"
                 @click="
-                  actStockFavoriteCreate(formData.code), (action = 'Create')"
+                  actStockFavoriteCreate(formData.code), (action = 'Create')
+                "
               >
                 <v-icon dark> mdi-plus-thick </v-icon>
               </v-btn>
@@ -91,6 +92,7 @@
           ma-0
           color="cyan darken-2"
           @click="actStockFavoriteSet(item), mtdDialog(true), (action = 'Edit')"
+          v-show="item.code != null"
         >
           <span>
             {{ item.code }}
@@ -104,7 +106,7 @@
       </template>
       <template v-slot:[`item.position`]="{ item }">
         <span v-if="item.position > 5" style="color:#CE0000">
-          {{ item.postion }}
+          {{ item.position }}
         </span>
         <span
           v-else-if="item.position < 5 && item.position >= 1"
@@ -141,28 +143,27 @@
       </template>
       <template v-slot:[`item.selfmemo`]="{ item }">
         <v-text-field
-              v-model = item.selfmemo
-              @focus="mtdWatchSelfMemo( {id: item.id, memo: item.selfmemo} )"
-              @blur="mtdChangeSelfMemo(item.id,item.selfmemo)"
+          v-model="item.selfmemo"
+          @focus="mtdWatchSelfMemo({ id: item.id, memo: item.selfmemo })"
+          @blur="mtdChangeSelfMemo(item.id, item.selfmemo)"
+          v-show="item.code != null"
         ></v-text-field>
       </template>
     </v-data-table>
 
     <!-- 跳窗顯示區域 -->
-    <v-dialog v-model="dialog" persistent max-width="40%">
-      <v-card>
+    <v-dialog v-model="dialog" persistent max-width="320px">
+      <v-card class="grey darken-3">
         <v-card-actions>
           <v-btn
             color="blue"
             @click="mtdToGoodinfo(formData.code), mtdDialog(false)"
-            :disabled="!validate"
           >
             連結Goodinfo
           </v-btn>
           <v-btn
             color="blue"
-            @click="actStockStatisticsEdit(), mtdDialog(false)"
-            :disabled="!validate"
+            @click="mtdDialogShow(true)"
           >
             加入庫存
           </v-btn>
@@ -184,6 +185,58 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogShow" persistent max-width="320px">
+      <v-card class="grey darken-3">
+        <v-card-title class="cyan--text">
+          新增庫存
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="4">
+              <v-text-field label="代碼/名稱" v-model="formData.code">
+              </v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                label="價格"
+                v-model="formData.buyPrice"
+                type="number"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                label="股數"
+                v-model="formData.buyShares"
+                type="number"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="grey"
+            outlined
+            @click="mtdDialogShow(false)"
+            :disabled="!validate"
+          >
+            取消
+          </v-btn>
+          <v-btn
+            color="cyan"
+            outlined
+            @click="actStockProfitCreate(formData.code), mtdDialogShow(false)"
+            :disabled="!validate"
+          >
+            新增
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -200,6 +253,7 @@ export default {
       validate: false,
       PG: PG,
       operMemo: "",
+      dialogShow: "",
     };
   },
   created() {
@@ -248,6 +302,7 @@ export default {
       "actStockFavoriteCreate",
       "actStockFavoriteEdit",
       "actStockFavoriteDelete",
+      "actStockProfitCreate",
     ]),
     mtdDialog(status) {
       this.dialog = status;
@@ -257,14 +312,17 @@ export default {
         `https://goodinfo.tw/StockInfo/StockBzPerformance.asp?STOCK_ID=${code}`
       );
     },
-    mtdWatchSelfMemo({id,memo}){
+    mtdWatchSelfMemo({ id, memo }) {
       this.operMemo = memo;
     },
-    mtdChangeSelfMemo(id,memo){
-      if(memo != this.operMemo){
-        this.actStockFavoriteEdit({id,memo});
+    mtdChangeSelfMemo(id, memo) {
+      if (memo != this.operMemo) {
+        this.actStockFavoriteEdit({ id, memo });
       }
-    }
+    },
+    mtdDialogShow(status) {
+      this.dialogShow = status;
+    },
   },
 };
 </script>

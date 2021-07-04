@@ -5,7 +5,7 @@
       <h5 class="red--text mb-1">
         股價報表,平均範圍: {{ gridConfig.data[0].avgStartDate | formatDate }} ~
         {{ gridConfig.data[0].avgEndDate | formatDate }} 現價:{{
-          grid.data[0].dataDate | formatDate
+          gridConfig.data[0].nowDate | formatDate
         }}
         查詢結果: {{ grid.dataLength | formatCommas }}
       </h5>
@@ -125,6 +125,7 @@
           color="cyan darken-2"
           @click="
             actStockStatisticsSet(item), mtdDialog(true), (action = 'Edit')"
+          v-show="item.code != null"
         >
           <span>
             {{ item.code }}
@@ -191,11 +192,14 @@
     </v-data-table>
 
     <!-- 跳窗顯示區域 -->
-    <v-dialog v-model="dialog" persistent max-width="40%">
-      <v-card>
+    <v-dialog v-model="dialog" persistent max-width="360px">
+      <v-card color="grey darken-3">
         <v-card-actions>
-          <v-btn color="blue" @click="mtdToGoodinfo(formData.code), mtdDialog(false)"
-          :disabled="!validate">
+          <v-btn
+            color="blue"
+            @click="mtdToGoodinfo(formData.code), mtdDialog(false)"
+            :disabled="!validate"
+          >
             連結Goodinfo
           </v-btn>
           <v-btn
@@ -207,7 +211,7 @@
           </v-btn>
           <v-btn
             color="blue"
-            @click="actStockStatisticsEdit(), mtdDialog(false)"
+            @click="mtdDialogShow(true)"
             :disabled="!validate"
           >
             加入庫存
@@ -230,6 +234,49 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogShow" persistent width="320px">
+      <v-card color="grey darken-3">
+        <v-card-title class="cyan--text">
+          新增庫存
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="4">
+              <v-text-field label="代碼/名稱" v-model="formData.code">
+              </v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                label="價格"
+                v-model="formData.buyPrice"
+                type="number"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                label="股數"
+                v-model="formData.buyShares"
+                type="number"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="grey" outlined @click="mtdDialogShow(false)">
+            取消
+          </v-btn>
+          <v-btn
+            color="cyan"
+            outlined
+            @click="actStockProfitCreate(formData.code), mtdDialogShow(false)"
+          >
+            新增
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -245,12 +292,12 @@ export default {
       action: "",
       validate: false,
       PG: PG,
+      dialogShow: false,
     };
   },
   created() {
     this.actInit();
     this.actStockSysConfigRead();
-    
   },
   mounted() {
     this.actStockStatisticsRead();
@@ -297,14 +344,20 @@ export default {
       "actStockStatisticsEdit",
       "actStockStatisticsDelete",
       "actStockSysConfigRead",
+      "actStockProfitCreate",
     ]),
-    ...mapActions("stockFavorite",["actStockFavoriteCreate"]),
+    ...mapActions("stockFavorite", ["actStockFavoriteCreate"]),
     mtdDialog(status) {
       this.dialog = status;
     },
-    mtdToGoodinfo(code){
-      window.open(`https://goodinfo.tw/StockInfo/StockBzPerformance.asp?STOCK_ID=${code}`);
-    }
+    mtdToGoodinfo(code) {
+      window.open(
+        `https://goodinfo.tw/StockInfo/StockBzPerformance.asp?STOCK_ID=${code}`
+      );
+    },
+    mtdDialogShow(status) {
+      this.dialogShow = status;
+    },
   },
 };
 </script>
