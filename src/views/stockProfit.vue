@@ -220,7 +220,6 @@ export default {
   mounted() {
     this.actStockProfitRead();
   },
-  computed: {},
   components: {},
   watch: {
     formData: {

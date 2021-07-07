@@ -8,6 +8,7 @@ import stockFavorite from "./modules/stockFavorite.js"
 import stockProfit from "./modules/stockProfit.js"
 import stockMemo from "./modules/stockMemo.js"
 import stockDownload from "./modules/stockDownload.js"
+import Login from "./modules/Login.js"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     stockProfit,
     stockMemo,
     stockDownload,
+    Login,
   },
 });
 

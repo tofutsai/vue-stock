@@ -71,7 +71,7 @@ const actions = {
   actStockDataCreate({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/CreateStockData", f)
       .then((res) => {
@@ -90,7 +90,7 @@ const actions = {
   actStockDataEdit({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/UpdateStockData", f)
       .then((res) => {

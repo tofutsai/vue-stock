@@ -71,7 +71,7 @@ const actions = {
   actStockIndexCreate({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/CreateStockIndex", f)
       .then((res) => {
@@ -90,7 +90,7 @@ const actions = {
   actStockIndexEdit({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/EditStockIndex", f)
       .then((res) => {

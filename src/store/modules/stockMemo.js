@@ -47,7 +47,7 @@ const actions = {
   actStockMemoCreate({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/StockMemo", f)
       .then((res) => {

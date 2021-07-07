@@ -46,7 +46,7 @@ const actions = {
   actStockDownload({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/DownloadStockData")
       .then((res) => {
@@ -65,7 +65,7 @@ const actions = {
   actOtcDownload({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/DownloadOtcData")
       .then((res) => {
@@ -84,7 +84,7 @@ const actions = {
   actComputeStockAvg({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/ComputeStockAvg")
       .then((res) => {
@@ -103,7 +103,7 @@ const actions = {
   actComputeStockNow({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/ComputeStockNow")
       .then((res) => {
@@ -145,7 +145,7 @@ const actions = {
   actStockSysConfigEdit({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/EditSysConfig", f)
       .then((res) => {

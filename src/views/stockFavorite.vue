@@ -262,7 +262,6 @@ export default {
   mounted() {
     this.actStockFavoriteRead();
   },
-  computed: {},
   components: {},
   watch: {
     formData: {

@@ -49,7 +49,7 @@ const actions = {
     state.grid.data = [{}];
     const f = state.formSearch;
     f.options = state.grid.options;
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
       .post("/api/ReadStockFavorite", f)
@@ -71,7 +71,7 @@ const actions = {
   actStockFavoriteCreate({ commit }, payload) {
     const f = state.formData;
     f.code = payload;
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
       .post("/api/CreateStockFavorite", f)
@@ -90,7 +90,7 @@ const actions = {
   },
   actStockFavoriteEdit({ commit }, payload) {
     const f = state.formData;
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     f.id = payload.id;
     f.memo = payload.memo;
     axiosAPI.instance
@@ -111,7 +111,7 @@ const actions = {
   actStockFavoriteDelete({ commit }, payload) {
     PG.setConfirm(`確認是否刪除 code:${payload.code} ?`, () => {
       const f = { id: payload.id };
-      f.operId = PG.getOper().id;
+      f.operId = PG.getOper().OperId;
       axiosAPI.instance
         .post("/api/DeleteStockFavorite", f)
         .then((res) => {
@@ -130,7 +130,7 @@ const actions = {
   actStockProfitCreate({ commit }, payload) {
     const f = state.formData;
     f.code = payload;
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
       .post("/api/CreateStockProfit", f)
