@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar max-height="64px">
+  <v-app-bar max-height="64px" v-if="user.OperId != 0">
     <!-- Logo位置 -->
     <div
       class="pl-3 amber--text"
@@ -17,11 +17,18 @@
 
     <v-spacer />
     <!-- 自動填滿左右區塊 分配父子组件之间的剩餘寬度。 當一個 v-spacer 放置在子组件之前或之后时，组件将推到其容器的左右两侧。-->
-
+    <v-tooltip top>
+      <template v-slot:activator="{ on, attrs}">
+        <v-btn text class="amber--text" v-bind="attrs" v-on="on">
+          <v-icon>mdi-account </v-icon>{{ PG.getOper().OperName }}
+          </v-btn>
+      </template>
+      <span>你好 {{ PG.getOper().OperName }}</span>
+    </v-tooltip>
     <!-- 登出位置 -->
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon color="cyan" v-bind="attrs" v-on="on">
+        <v-btn icon color="cyan" v-bind="attrs" v-on="on" @click="actInit(), mtdGoLoginPage()">
           <v-icon>mdi-logout</v-icon>
         </v-btn>
       </template>
@@ -34,6 +41,9 @@
       @click="PG.setNavigation(true)"
     >
     </v-app-bar-nav-icon>
+  </v-app-bar>
+  <v-app-bar max-height="64px" v-else>
+
   </v-app-bar>
 </template>
 
@@ -87,8 +97,10 @@ export default {
   mounted() {},
   computed: {
     ...mapState("global", ["navigation", "func"]),
+    ...mapState("Login", ["user"]),
   },
   methods: {
+    ...mapActions("Login", ["actInit"]),
     mtdClickTab(tab) {
       this.$router
         .push(tab.path)
@@ -97,6 +109,9 @@ export default {
           err;
         });
     },
+    mtdGoLoginPage(){
+      this.$router.push("/login").then(() => {}).catch((err) => { err;});
+    }
   },
 };
 </script>

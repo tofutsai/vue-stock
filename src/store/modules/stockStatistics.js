@@ -84,12 +84,8 @@ const actions = {
         console.log("error", error);
       });
   },
-  actStockSysConfigRead({ commit }, isManual) { //isManual手動查詢要清空grid設定
-    //if (isManual) {
-    //  state.grid.options.page = grids.gridStockStatistics.options.page;
-    //  state.grid.options.itemsPerPage =
-    //    grids.gridStockStatistics.options.itemsPerPage;
-    //}
+  actStockSysConfigRead({ commit }, isManual) { 
+    
     state.gridConfig.data = [{}];
     axiosAPI.instance
       .post("/api/ReadSysConfig")
@@ -111,7 +107,7 @@ const actions = {
   actStockStatisticsCreate({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/CreateStockStatistics", f)
       .then((res) => {
@@ -130,7 +126,7 @@ const actions = {
   actStockStatisticsEdit({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
     axiosAPI.instance
       .post("/api/UpdateStockStatistics", f)
       .then((res) => {
@@ -170,7 +166,7 @@ const actions = {
   actStockProfitCreate({ commit }, payload) {
     const f = state.formData;
     f.code = payload;
-    f.operId = PG.getOper().id;
+    f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
       .post("/api/CreateStockProfit", f)

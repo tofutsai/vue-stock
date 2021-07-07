@@ -30,14 +30,14 @@ const Plugin = {
     },
   },
   getOper() {
-    const UserInfo = sessionStorage.getItem("UserInfo");
+    const UserInfo = JSON.parse(sessionStorage.getItem("UserInfo"));
     if (UserInfo != null && UserInfo != "") {
-      return JSON.parse(UserInfo);
+      return UserInfo;
     } else {
       const UserInfo = {
-        id: 4,
-        account: "tofu",
-        name: "MR TOFU",
+        // id: 4,
+        // account: "tofu",
+        // name: "MR TOFU",
       };
       return UserInfo;
     }
