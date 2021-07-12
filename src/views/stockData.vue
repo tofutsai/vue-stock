@@ -32,7 +32,7 @@
                 fab
                 dark
                 small
-                color="green"
+                color="blue"
                 @click="actStockDataRead(true)"
               >
                 <v-icon dark> mdi-magnify </v-icon>
@@ -49,7 +49,7 @@
                 fab
                 dark
                 small
-                color="green"
+                color="blue"
                 @click="actInit(), actStockDataRead()"
               >
                 <v-icon dark> mdi-refresh </v-icon>
@@ -57,23 +57,6 @@
             </template>
             <span>重新整理</span>
           </v-tooltip>
-          <!-- <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                v-bind="attrs"
-                v-on="on"
-                class="mx-2"
-                fab
-                dark
-                small
-                color="blue"
-                @click="actInitFormData(), mtdDialog(true), (action = 'Create')"
-              >
-                <v-icon dark> mdi-plus-thick </v-icon>
-              </v-btn>
-            </template>
-            <span>新增</span>
-          </v-tooltip> -->
         </v-col>
       </v-row>
     </v-container>
@@ -165,7 +148,6 @@ export default {
   mounted() {
     this.actStockDataRead();
   },
-  computed: {},
   components: {},
   watch: {
     formData: {

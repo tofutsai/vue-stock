@@ -8,27 +8,53 @@
     >
       TSTOCK
     </div>
-    <v-tabs icons-and-text class="hidden-sm-and-down">
-      <v-tab v-for="tab in tabs" :key="tab.name" @click="mtdClickTab(tab)">
-        {{ tab.text }}
-        <v-icon v-text="tab.icon"></v-icon>
-      </v-tab>
-    </v-tabs>
+    <v-tabs class="hidden-sm-and-down" icons-and-text>
+      <v-tabs-slider color="blue"></v-tabs-slider>
+      <v-menu v-for="f in func" :key="f.title" offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-tab v-bind="attrs" v-on="on" @click="mtdClickTab(f.tab)">
+            <span>
+              {{ f.tab.title }}
+            </span>
+            <div style="height:5px"></div>
+            <v-icon>
+              {{ f.tab.icon }}
+            </v-icon>
+          </v-tab>
+        </template>
 
+        <v-list v-if="f.items.length > 0">
+          <v-list-item
+            v-for="item in f.items"
+            :key="item.title"
+            link
+            @click="mtdClickTab(item)"
+          >
+            <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-tabs>
     <v-spacer />
     <!-- 自動填滿左右區塊 分配父子组件之间的剩餘寬度。 當一個 v-spacer 放置在子组件之前或之后时，组件将推到其容器的左右两侧。-->
     <v-tooltip top>
-      <template v-slot:activator="{ on, attrs}">
+      <template v-slot:activator="{ on, attrs }">
         <v-btn text class="amber--text" v-bind="attrs" v-on="on">
           <v-icon>mdi-account </v-icon>{{ PG.getOper().OperName }}
-          </v-btn>
+        </v-btn>
       </template>
       <span>你好 {{ PG.getOper().OperName }}</span>
     </v-tooltip>
     <!-- 登出位置 -->
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon color="cyan" v-bind="attrs" v-on="on" @click="actInit(), mtdGoLoginPage()">
+        <v-btn
+          icon
+          color="cyan"
+          v-bind="attrs"
+          v-on="on"
+          @click="actInit(), mtdGoLoginPage()"
+        >
           <v-icon>mdi-logout</v-icon>
         </v-btn>
       </template>
@@ -42,9 +68,7 @@
     >
     </v-app-bar-nav-icon>
   </v-app-bar>
-  <v-app-bar max-height="64px" v-else>
-
-  </v-app-bar>
+  <v-app-bar max-height="64px" v-else> </v-app-bar>
 </template>
 
 <script>
@@ -62,7 +86,7 @@ export default {
         },
         {
           path: "/stockDownload",
-          text: "股價下載計算",
+          text: "下載計算備註",
           icon: "mdi-chart-box",
         },
         {
@@ -78,11 +102,6 @@ export default {
         {
           path: "/stockData",
           text: "個股資訊查詢",
-          icon: "mdi-chart-box",
-        },
-        {
-          path: "/stockMemo",
-          text: "個股資訊備註",
           icon: "mdi-chart-box",
         },
         {
@@ -109,9 +128,14 @@ export default {
           err;
         });
     },
-    mtdGoLoginPage(){
-      this.$router.push("/login").then(() => {}).catch((err) => { err;});
-    }
+    mtdGoLoginPage() {
+      this.$router
+        .push("/login")
+        .then(() => {})
+        .catch((err) => {
+          err;
+        });
+    },
   },
 };
 </script>

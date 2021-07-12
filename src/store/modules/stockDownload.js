@@ -26,7 +26,15 @@ const state = {
     gridConfig: grids.gridConfig,
   },
   selectItems: {
-    type: [],
+    type: [
+      { text: "ext1 月KD", value: "ext1" },
+      { text: "ext2 週KD", value: "ext2" },
+      { text: "ext3 淨利", value: "ext3" },
+      { text: "ext4 ROE", value: "ext4" },
+      { text: "ext5 EPS", value: "ext5" },
+      { text: "ext6 殖利率", value: "ext6" },
+      { text: "ext7 本益比", value: "ext7" },
+    ],
   },
   formSearch: {},
   formData: {},
@@ -111,7 +119,7 @@ const actions = {
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actInitFormData({ commit });
-          actions.actStockSysConfigRead({commit});
+          actions.actStockSysConfigRead({ commit });
         } else {
           PG.setSnackBar(res.data.Message);
         }
@@ -152,8 +160,26 @@ const actions = {
         console.log("/api/EditSysConfig", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
-          actions.actStockSysConfigRead({commit});
+          actions.actStockSysConfigRead({ commit });
           //actions.actInitFormData({ commit });
+        } else {
+          PG.setSnackBar(res.data.Message);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  },
+  actStockMemoCreate({ commit }) {
+    const f = state.formData;
+
+    f.operId = PG.getOper().OperId;
+    axiosAPI.instance
+      .post("/api/StockMemo", f)
+      .then((res) => {
+        if (res.data.Success) {
+          PG.setSnackBar(res.data.Message, "success");
+          actions.actInitFormData({ commit });
         } else {
           PG.setSnackBar(res.data.Message);
         }
@@ -176,11 +202,21 @@ const mutations = {
   },
   mutGridConfig(state, data) {
     state.gridConfig.data = data.Data;
-    state.formData.stockUpdate = PG.formatDatedash(state.gridConfig.data[0].stockUpdate);
-    state.formData.otcUpdate = PG.formatDatedash(state.gridConfig.data[0].otcUpdate);
-    state.formData.nowDate = PG.formatDatedash(state.gridConfig.data[0].nowDate);
-    state.formData.avgStartDate = PG.formatDatedash(state.gridConfig.data[0].avgStartDate);
-    state.formData.avgEndDate = PG.formatDatedash(state.gridConfig.data[0].avgEndDate);
+    state.formData.stockUpdate = PG.formatDatedash(
+      state.gridConfig.data[0].stockUpdate
+    );
+    state.formData.otcUpdate = PG.formatDatedash(
+      state.gridConfig.data[0].otcUpdate
+    );
+    state.formData.nowDate = PG.formatDatedash(
+      state.gridConfig.data[0].nowDate
+    );
+    state.formData.avgStartDate = PG.formatDatedash(
+      state.gridConfig.data[0].avgStartDate
+    );
+    state.formData.avgEndDate = PG.formatDatedash(
+      state.gridConfig.data[0].avgEndDate
+    );
   },
 };
 
