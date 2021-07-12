@@ -17,17 +17,73 @@ const state = {
       company: "",
       dataDate: PG.getNowDate(-1, "D"),
       isEnable: true,
-      buyPrice:0,
-      buyShares:0,
+      buyPrice: 0,
+      buyShares: 0,
     },
     grid: grids.gridStockFavorite,
+    chartData: {
+      info: {
+        code: "",
+        company: "",
+        closePrice: "",
+        position: "",
+        memo: "",
+      },
+      options: {
+        plotOptions: {
+          candlestick: {
+            colors: {
+              upward: "#EF403C",
+              downward: "#00B746",
+            },
+          },
+        },
+        chart: {
+          type: "candlestick",
+          animations: {
+            enabled: true,
+            easing: "easeinout",
+            speed: 80,
+            animateGradually: {
+              enabled: true,
+              delay: 15,
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 35,
+            },
+          },
+        },
+        title: {
+          text: "K線圖",
+          align: "left",
+        },
+        xaxis: {
+          type: "string",
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true,
+          },
+        },
+      },
+      series: [
+        {
+          data: [
+            {
+              x: "01/01",
+              y: [1, 1, 1, 1],
+            },
+          ],
+        },
+      ],
+    },
   },
-  selectItems: {
-    
-  },
+  selectItems: {},
   formSearch: {},
   formData: {},
   grid: {},
+  chartData: {},
 };
 
 const getters = {};
@@ -38,6 +94,9 @@ const actions = {
   },
   actInitFormData({ commit }) {
     commit("mutInitFormData");
+  },
+  actInitChartData({ commit }) {
+    commit("mutInitChartData");
   },
   actStockFavoriteRead({ commit }, isManual) {
     if (isManual) {
@@ -139,7 +198,7 @@ const actions = {
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockProfitRead({ commit });
-          actions.actInitFormData({commit});
+          actions.actInitFormData({ commit });
         } else {
           PG.setSnackBar(res.data.Message);
         }
@@ -147,28 +206,66 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
-  }
+  },
+  actStockDataRead({ commit }, payload) {
+    const f = state.chartData;
+    f.code = payload;
+    f.dataDate = PG.getNowDate(-3, "M"),
+      axiosAPI.instance
+        .post("/api/ReadStockData", f)
+        .then((res) => {
+          console.log("/api/ReadStockData", res.data);
+          if (res.data.Success) {
+            commit("mutChartData", res.data);
+          } else {
+            PG.setSnackBar(res.data.Message);
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+  },
 };
 
 const mutations = {
-    mutInit(state){
-        state.formSearch = JSON.parse(JSON.stringify(state.init.formSearch));
-        state.formData = JSON.parse(JSON.stringify(state.init.formData));
-        state.grid = JSON.parse(JSON.stringify(state.init.grid));
-    },
-    mutInitFormData(state) {
-        state.formData = JSON.parse(JSON.stringify(state.init.formData));
-    },
-    mutStockFavoriteSet(state, payload){
-        state.formData = JSON.parse(JSON.stringify(payload));
-        state.formData.dataDate = PG.formatDate(state.formData.dataDate, "-");
-        state.formData.buyPrice = 0;
-        state.formData.buyShares = 0;
-    },
-    mutGrid(state, data) {
-      state.grid.data = data.Data;
-      state.grid.dataLength = data.TotalCount;
-    },
+  mutInit(state) {
+    state.formSearch = JSON.parse(JSON.stringify(state.init.formSearch));
+    state.formData = JSON.parse(JSON.stringify(state.init.formData));
+    state.grid = JSON.parse(JSON.stringify(state.init.grid));
+    state.chartData = JSON.parse(JSON.stringify(state.init.chartData));
+  },
+  mutInitFormData(state) {
+    state.formData = JSON.parse(JSON.stringify(state.init.formData));
+  },
+  mutInitChartData(state) {
+    state.chartData = JSON.parse(JSON.stringify(state.init.chartData));
+  },
+  mutStockFavoriteSet(state, payload) {
+    state.formData = JSON.parse(JSON.stringify(payload));
+    state.formData.dataDate = PG.formatDate(state.formData.dataDate, "-");
+    state.formData.buyPrice = 0;
+    state.formData.buyShares = 0;
+  },
+  mutGrid(state, data) {
+    state.grid.data = data.Data;
+    state.grid.dataLength = data.TotalCount;
+  },
+  mutChartData(state, data) {
+    state.chartData.info.code = data.Data[0].code;
+    state.chartData.info.company = data.Data[0].company;
+    state.chartData.series[0].data.length = data.Data.length;
+    for (let i = 0; i < data.Data.length; i++) {
+      state.chartData.series[0].data[i] = {
+        x: PG.formatDatetoMD(data.Data[i].dataDate),
+        y: [
+          data.Data[i].openPrice,
+          data.Data[i].highestPrice,
+          data.Data[i].lowestPrice,
+          data.Data[i].closePrice,
+        ],
+      };
+    }
+  },
 };
 
 export default {

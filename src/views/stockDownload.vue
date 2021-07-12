@@ -29,7 +29,7 @@
                 </v-col>
                 <v-col cols="8" md="8" class="text-h6">
                   <div>最後更新</div>
-                  <div>{{ gridConfig.data[0].nowDate | formatDate}}</div>
+                  <div>{{ gridConfig.data[0].nowDate | formatDate }}</div>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -62,7 +62,7 @@
                 </v-col>
                 <v-col cols="8" md="8" class="text-h6">
                   <div>最後更新</div>
-                  <div>{{ gridConfig.data[0].nowDate | formatDate}}</div>
+                  <div>{{ gridConfig.data[0].nowDate | formatDate }}</div>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -94,8 +94,8 @@
                   </v-tooltip>
                 </v-col>
                 <v-col cols="8" md="8" class="text-h6">
-                  <div>{{ gridConfig.data[0].avgStartDate | formatDate}}</div>
-                  <div>{{ gridConfig.data[0].avgEndDate | formatDate}}</div>
+                  <div>{{ gridConfig.data[0].avgStartDate | formatDate }}</div>
+                  <div>{{ gridConfig.data[0].avgEndDate | formatDate }}</div>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -147,6 +147,31 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn v-bind="attrs" v-on="on" text @click="mtdDialog(true)">
                     <v-icon style="font-size:36px">mdi-cog-box</v-icon>
+                  </v-btn>
+                </template>
+                <span>設定</span>
+              </v-tooltip>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="2">
+          <v-card color="purple lighten-2">
+            <v-card-text
+              class="white--text headline pa-1 font-wight-bold text-center"
+            >
+              備註資訊
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions class="justify-center pt-4 pb-5">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    text
+                    @click="mtdMemoDialog(true)"
+                  >
+                    <v-icon style="font-size:36px">mdi-clipboard-text</v-icon>
                   </v-btn>
                 </template>
                 <span>設定</span>
@@ -236,6 +261,57 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="memoDialog" persistent width="320px">
+      <v-card class="grey darken-3">
+        <v-card-actions>
+          <v-card-title class="cyan--text headline">
+            Stock Memo Setting
+          </v-card-title>
+          <v-spacer />
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                icon
+                color="cyan"
+                @click="mtdMemoDialog(false)"
+              >
+                <v-icon>mdi-close-box</v-icon>
+              </v-btn>
+            </template>
+            <span>關閉</span>
+          </v-tooltip>
+        </v-card-actions>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12">
+              <v-select
+                label="Ext type"
+                :items="selectItems.type"
+                v-model="formData.type"
+              >
+              </v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field label="memo" v-model="formData.memoContent">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-textarea label="Codes" rows="5" v-model="formData.codes">
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="cyan" outlined @click="actStockMemoCreate()">
+            上傳
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -247,15 +323,14 @@ export default {
     return {
       dialog: false,
       PG: PG,
+      memoDialog: false,
     };
   },
   created() {
     this.actInit();
     this.actStockSysConfigRead();
   },
-  mounted() {
-    
-    },
+  mounted() {},
   computed: {},
   components: {},
   watch: {},
@@ -278,9 +353,13 @@ export default {
       "actComputeStockNow",
       "actStockSysConfigRead",
       "actStockSysConfigEdit",
+      "actStockMemoCreate",
     ]),
     mtdDialog(status) {
       this.dialog = status;
+    },
+    mtdMemoDialog(status) {
+      this.memoDialog = status;
     },
   },
 };

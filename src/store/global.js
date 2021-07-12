@@ -1,12 +1,31 @@
 const state = {
   func: [
     {
-      tab: { title: "資訊看板", path:"/dashboard", icon: "mdi-view-dashboard" },
+      tab: { title: "資訊看板", path:"/stockStatistics", icon: "mdi-view-dashboard" },
+      items: [], 
+    },
+    {
+      tab: { title: "下載計算備註", path:"/stockDownload", icon: "mdi-chart-box" },
       items: [],
     },
     {
-      tab: { title: "股價報表",  path:"/report",icon: "mdi-chart-box" },
+      tab: { title: "自選清單", path:"/stockFavorite", icon: "mdi-hand-heart" },
       items: [],
+    },
+    {
+      tab: { title: "庫存損益", path:"/stockProfit", icon: "mdi-account-cash" },
+      items: [],
+    },
+    {
+      tab: { title: "個股資訊查詢", path:"/stockData", icon: "mdi-chart-box" },
+      items: [],
+    },
+    {
+      tab: { title: "系統資料", path:"/stockIndex", icon: "mdi-database" },
+      items: [
+        {title : "個股索引表", path:"/stockIndex"},
+        {title : "系統Log", path:"/stockSysLog"}
+      ],
     },
   ],
   alert: {

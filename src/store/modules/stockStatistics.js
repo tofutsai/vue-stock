@@ -24,6 +24,63 @@ const state = {
     },
     grid:grids.gridStockStatistics,
     gridConfig:grids.gridConfig,
+    chartData: {
+      info: {
+        code: "",
+        company: "",
+        closePrice: "",
+        position: "",
+        memo: "",
+      },
+      options: {
+        plotOptions: {
+          candlestick: {
+            colors: {
+              upward: "#EF403C",
+              downward: "#00B746",
+            },
+          },
+        },
+        chart: {
+          type: "candlestick",
+          animations: {
+            enabled: true,
+            easing: "easeinout",
+            speed: 80,
+            animateGradually: {
+              enabled: true,
+              delay: 15,
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 35,
+            },
+          },
+        },
+        title: {
+          text: "K線圖",
+          align: "left",
+        },
+        xaxis: {
+          type: "string",
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true,
+          },
+        },
+      },
+      series: [
+        {
+          data: [
+            {
+              x: "01/01",
+              y: [1, 1, 1, 1],
+            },
+          ],
+        },
+      ],
+    },
   },
   selectItems: {
     type: [
@@ -48,6 +105,7 @@ const state = {
   formData: {},
   grid: {},
   gridConfig:{},
+  chartData:{},
 };
 
 const getters = {};
@@ -58,6 +116,9 @@ const actions = {
   },
   actInitFormData({ commit }) {
     commit("mutInitFormData");
+  },
+  actInitChartData({ commit }) {
+    commit("mutInitChartData");
   },
   actStockStatisticsRead({ commit }, isManual) { //isManual手動查詢要清空grid設定
     if (isManual) {
@@ -183,7 +244,25 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
-  }
+  },
+  actStockDataRead({ commit }, payload) {
+    const f = state.chartData;
+    f.code = payload;
+    f.dataDate = PG.getNowDate(-3, "M"),
+      axiosAPI.instance
+        .post("/api/ReadStockData", f)
+        .then((res) => {
+          console.log("/api/ReadStockData", res.data);
+          if (res.data.Success) {
+            commit("mutChartData", res.data);
+          } else {
+            PG.setSnackBar(res.data.Message);
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+  },
 };
 
 const mutations = {
@@ -192,6 +271,7 @@ const mutations = {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
     state.grid = JSON.parse(JSON.stringify(state.init.grid));
     state.gridConfig = JSON.parse(JSON.stringify(state.init.gridConfig));
+    state.chartData = JSON.parse(JSON.stringify(state.init.chartData));
   },
   mutInitFormData(state) {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
@@ -206,7 +286,26 @@ const mutations = {
   },
   mutGridConfig(state,data){
     state.gridConfig.data = data.Data;
-  }
+  },
+  mutInitChartData(state) {
+    state.chartData = JSON.parse(JSON.stringify(state.init.chartData));
+  },
+  mutChartData(state, data) {
+    state.chartData.info.code = data.Data[0].code;
+    state.chartData.info.company = data.Data[0].company;
+    state.chartData.series[0].data.length = data.Data.length;
+    for (let i = 0; i < data.Data.length; i++) {
+      state.chartData.series[0].data[i] = {
+        x: PG.formatDatetoMD(data.Data[i].dataDate),
+        y: [
+          data.Data[i].openPrice,
+          data.Data[i].highestPrice,
+          data.Data[i].lowestPrice,
+          data.Data[i].closePrice,
+        ],
+      };
+    }
+  },
 };
 
 export default {

@@ -381,6 +381,44 @@ export default {
     data: [{}],
     dataLength: 0,
   },
+  gridStockSysLog:{
+    footerProps:{
+      "items-per-page-options":[50, 300, 500, 2000],
+      "items-per-page-text":"每頁筆數",
+    },
+    options:{
+      page: 1,
+      itemsPerPage: 50,
+      sortBy: ["id"],
+      sortDesc: [false],
+      groupBy: [],
+      groupDesc: [],
+      mustSort: false,
+      multiSort: false,
+    },
+    headers:[
+      {
+        text: "日期",
+        value: "date",
+        sortable: false,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "類型",
+        value: "type",
+        sortable: false,
+        class: "grey darken-1 ",
+      },
+      {
+        text: "訊息",
+        value: "message",
+        sortable: false,
+        class: "grey darken-1 ",
+      },
+    ],
+    data: [{}],
+    dataLength: 0,
+  },
   gridStockMemo:{
     data:[{}],
     dataLength:0,

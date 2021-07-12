@@ -8,9 +8,12 @@ import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.css";
 import vuetify from "./plugins/vuetify";
 import PG from "./store/plugin.js";
+import VueApexCharts from 'vue-apexcharts'
 
+Vue.use(VueApexCharts)
 Vue.use(Vuetify);
 Vue.mixin(PG.mixin); //Vue.mixin 表示用於全域
+Vue.component('apexchart', VueApexCharts)
 
 new Vue({
   vuetify,

@@ -10,6 +10,7 @@ import stockMemo from "@/views/stockMemo.vue";
 import stockStatistics from "@/views/stockStatistics.vue";
 import stockProfit from "@/views/stockProfit.vue";
 import login from "@/views/Login.vue";
+import stockSysLog from "@/views/stockSysLog.vue";
 
 Vue.use(VueRouter);
 
@@ -69,6 +70,11 @@ const routes = [
     name: "stockStatistics",
     component: stockStatistics,
   },
+  {
+    path: "/stockSysLog",
+    name: "stockSysLog",
+    component: stockSysLog,
+  }
 ];
 
 const router = new VueRouter({
