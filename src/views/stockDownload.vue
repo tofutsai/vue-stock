@@ -255,7 +255,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="cyan" @click="actStockSysConfigEdit()" outlined>
+          <v-btn color="cyan" @click="actStockSysConfigEdit(), mtdDialog(false)" outlined>
             更新
           </v-btn>
         </v-card-actions>
@@ -306,7 +306,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="cyan" outlined @click="actStockMemoCreate()">
+          <v-btn color="cyan" outlined @click="actStockMemoCreate(), mtdMemoDialog(false)">
             上傳
           </v-btn>
         </v-card-actions>

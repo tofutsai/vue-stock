@@ -53,9 +53,8 @@ const actions = {
   },
   actStockDownload({ commit }) {
     const f = state.formData;
-
-    f.operId = PG.getOper().OperId;
-    axiosAPI.instance
+    if(PG.getOper().OperIsAdmin){
+      axiosAPI.instance
       .post("/api/DownloadStockData")
       .then((res) => {
         console.log("/api/DownloadStockData", res.data);
@@ -69,12 +68,15 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+    
   },
   actOtcDownload({ commit }) {
     const f = state.formData;
-
-    f.operId = PG.getOper().OperId;
-    axiosAPI.instance
+    if(PG.getOper().OperIsAdmin){
+      axiosAPI.instance
       .post("/api/DownloadOtcData")
       .then((res) => {
         console.log("/api/DownloadStockData", res.data);
@@ -88,12 +90,15 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+    
   },
   actComputeStockAvg({ commit }) {
     const f = state.formData;
-
-    f.operId = PG.getOper().OperId;
-    axiosAPI.instance
+    if(PG.getOper().OperIsAdmin){
+      axiosAPI.instance
       .post("/api/ComputeStockAvg")
       .then((res) => {
         console.log("/api/ComputeStockAvg", res.data);
@@ -107,12 +112,16 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+    
   },
   actComputeStockNow({ commit }) {
     const f = state.formData;
 
-    f.operId = PG.getOper().OperId;
-    axiosAPI.instance
+    if(PG.getOper().OperIsAdmin){
+      axiosAPI.instance
       .post("/api/ComputeStockNow")
       .then((res) => {
         console.log("/api/ComputeStockNow", res.data);
@@ -127,6 +136,10 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+    
   },
   actStockSysConfigRead({ commit }, isManual) {
     //isManual手動查詢要清空grid設定
@@ -152,9 +165,9 @@ const actions = {
   },
   actStockSysConfigEdit({ commit }) {
     const f = state.formData;
-
     f.operId = PG.getOper().OperId;
-    axiosAPI.instance
+    if(PG.getOper().OperIsAdmin){
+      axiosAPI.instance
       .post("/api/EditSysConfig", f)
       .then((res) => {
         console.log("/api/EditSysConfig", res.data);
@@ -169,12 +182,17 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+    
+    
   },
   actStockMemoCreate({ commit }) {
     const f = state.formData;
-
     f.operId = PG.getOper().OperId;
-    axiosAPI.instance
+    if(PG.getOper().OperIsAdmin){
+      axiosAPI.instance
       .post("/api/StockMemo", f)
       .then((res) => {
         if (res.data.Success) {
@@ -187,6 +205,10 @@ const actions = {
       .catch((error) => {
         console.log("error", error);
       });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+    
   },
 };
 

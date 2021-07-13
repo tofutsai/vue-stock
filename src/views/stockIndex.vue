@@ -109,14 +109,16 @@
         </v-tooltip>
       </template>
       <template v-slot:[`item.code`]="{ item }">
-        <a
-          v-if="item.code != null"
+        <v-chip
           x-small
-          class="blue--text"
+          ma-0
+          color="cyan darken-2"
           @click="actStockIndexSet(item), mtdDialog(true), (action = 'Edit')"
         >
-          {{ item.code }}
-        </a>
+          <span>
+            {{ item.code }}
+          </span>
+        </v-chip>
       </template>
       <template v-slot:[`item.dataDate`]="{ item }">
         <span>
@@ -176,8 +178,15 @@
           </v-row>
         </v-card-text>
         <v-card-actions class="grey darken-3">
+          <v-btn
+            color="red"
+            @click="actStockIndexDelete(formData), mtdDialog(false)"
+            outlined
+            :disabled="!validate"
+          >
+            刪除
+          </v-btn>
           <v-spacer />
-
           <v-btn color="grey" @click="mtdDialog(false)" outlined>
             取消
           </v-btn>

@@ -40,7 +40,8 @@ const actions = {
   actInitFormData({ commit }) {
     commit("mutInitFormData");
   },
-  actStockIndexRead({ commit }, isManual) {//isManual手動查詢要清空grid設定
+  actStockIndexRead({ commit }, isManual) {
+    //isManual手動查詢要清空grid設定
     if (isManual) {
       state.grid.options.page = grids.gridStockIndex.options.page;
       state.grid.options.itemsPerPage =
@@ -70,51 +71,12 @@ const actions = {
   },
   actStockIndexCreate({ commit }) {
     const f = state.formData;
-
     f.operId = PG.getOper().OperId;
-    axiosAPI.instance
-      .post("/api/CreateStockIndex", f)
-      .then((res) => {
-        console.log("/api/CreateStockIndex", res.data);
-        if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
-          actions.actStockIndexRead({ commit });
-        } else {
-          PG.setSnackBar(res.data.Message);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  },
-  actStockIndexEdit({ commit }) {
-    const f = state.formData;
-
-    f.operId = PG.getOper().OperId;
-    axiosAPI.instance
-      .post("/api/EditStockIndex", f)
-      .then((res) => {
-        console.log("/api/EditStockIndex", res.data);
-        if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
-          actions.actStockIndexRead({ commit });
-        } else {
-          PG.setSnackBar(res.data.Message);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  },
-  actStockIndexDelete({ commit }, payload) {
-    // PG.setConfirm("AAAA?", ()=>{        } );
-    PG.setConfirm(`確認是否刪除 id:${payload.code} ?`, () => {
-      const f = { id: payload.id };
-
+    if (PG.getOper().OperIsAdmin) {
       axiosAPI.instance
-        .post("/api/DeleteStockIndex", f)
+        .post("/api/CreateStockIndex", f)
         .then((res) => {
-          console.log("/api/DeleteStockIndex", res.data);
+          console.log("/api/CreateStockIndex", res.data);
           if (res.data.Success) {
             PG.setSnackBar(res.data.Message, "success");
             actions.actStockIndexRead({ commit });
@@ -125,7 +87,57 @@ const actions = {
         .catch((error) => {
           console.log("error", error);
         });
-    });
+    } else {
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+  },
+  actStockIndexEdit({ commit }) {
+    const f = state.formData;
+    f.operId = PG.getOper().OperId;
+    if (PG.getOper().OperIsAdmin) {
+      axiosAPI.instance
+        .post("/api/EditStockIndex", f)
+        .then((res) => {
+          console.log("/api/EditStockIndex", res.data);
+          if (res.data.Success) {
+            PG.setSnackBar(res.data.Message, "success");
+            actions.actStockIndexRead({ commit });
+          } else {
+            PG.setSnackBar(res.data.Message);
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    } else {
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+  },
+  actStockIndexDelete({ commit }, payload) {
+    // PG.setConfirm("AAAA?", ()=>{        } );
+    if(PG.getOper().OperIsAdmin){
+      PG.setConfirm(`確認是否刪除 code:${payload.code} ?`, () => {
+        const f = { id: payload.id };
+  
+        axiosAPI.instance
+          .post("/api/DeleteStockIndex", f)
+          .then((res) => {
+            console.log("/api/DeleteStockIndex", res.data);
+            if (res.data.Success) {
+              PG.setSnackBar(res.data.Message, "success");
+              actions.actStockIndexRead({ commit });
+            } else {
+              PG.setSnackBar(res.data.Message);
+            }
+          })
+          .catch((error) => {
+            console.log("error", error);
+          });
+      });
+    }else{
+      PG.setSnackBar("需要管理者權限", "warning");
+    }
+   
   },
 };
 
