@@ -98,7 +98,7 @@ const state = {
     ],
     position2:[
         {text: "<=0.5", value: "0.5"},
-        {text: "不限位置", value: "30"},
+        {text: "不限位置", value: "50"},
     ]
   },
   formSearch: {},

@@ -59,10 +59,15 @@ const actions = {
       .then((res) => {
         console.log("/api/DownloadStockData", res.data);
         if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
+          if(res.data.Message == ""){
+            PG.setAlert("已更新至最新日期", "success");
+          }else{
+            PG.setAlert(res.data.Message, "success");
+          }
           actions.actInitFormData({ commit });
+          actions.actStockSysConfigRead({ commit });
         } else {
-          PG.setSnackBar(res.data.Message);
+          PG.setAlert(res.data.Message);
         }
       })
       .catch((error) => {
@@ -81,10 +86,15 @@ const actions = {
       .then((res) => {
         console.log("/api/DownloadStockData", res.data);
         if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
+          if(res.data.Message == ""){
+            PG.setAlert("已更新至最新日期", "success");
+          }else{
+            PG.setAlert(res.data.Message, "success");
+          }
           actions.actInitFormData({ commit });
+          actions.actStockSysConfigRead({ commit });
         } else {
-          PG.setSnackBar(res.data.Message);
+          PG.setAlert(res.data.Message);
         }
       })
       .catch((error) => {
@@ -103,10 +113,10 @@ const actions = {
       .then((res) => {
         console.log("/api/ComputeStockAvg", res.data);
         if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
+          PG.setAlert(res.data.Message, "success");
           actions.actInitFormData({ commit });
         } else {
-          PG.setSnackBar(res.data.Message);
+          PG.setAlert(res.data.Message);
         }
       })
       .catch((error) => {
@@ -126,11 +136,11 @@ const actions = {
       .then((res) => {
         console.log("/api/ComputeStockNow", res.data);
         if (res.data.Success) {
-          PG.setSnackBar(res.data.Message, "success");
+          PG.setAlert(res.data.Message, "success");
           actions.actInitFormData({ commit });
           actions.actStockSysConfigRead({ commit });
         } else {
-          PG.setSnackBar(res.data.Message);
+          PG.setAlert(res.data.Message);
         }
       })
       .catch((error) => {
@@ -224,20 +234,20 @@ const mutations = {
   },
   mutGridConfig(state, data) {
     state.gridConfig.data = data.Data;
-    state.formData.stockUpdate = PG.formatDatedash(
-      state.gridConfig.data[0].stockUpdate
+    state.formData.stockUpdate = PG.formatDate(
+      state.gridConfig.data[0].stockUpdate, "-"
     );
-    state.formData.otcUpdate = PG.formatDatedash(
-      state.gridConfig.data[0].otcUpdate
+    state.formData.otcUpdate = PG.formatDate(
+      state.gridConfig.data[0].otcUpdate, "-"
     );
-    state.formData.nowDate = PG.formatDatedash(
-      state.gridConfig.data[0].nowDate
+    state.formData.nowDate = PG.formatDate(
+      state.gridConfig.data[0].nowDate, "-"
     );
-    state.formData.avgStartDate = PG.formatDatedash(
-      state.gridConfig.data[0].avgStartDate
+    state.formData.avgStartDate = PG.formatDate(
+      state.gridConfig.data[0].avgStartDate, "-"
     );
-    state.formData.avgEndDate = PG.formatDatedash(
-      state.gridConfig.data[0].avgEndDate
+    state.formData.avgEndDate = PG.formatDate(
+      state.gridConfig.data[0].avgEndDate, "-"
     );
   },
 };
