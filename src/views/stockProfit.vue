@@ -183,7 +183,7 @@
           </v-btn>
           <v-btn
             color="blue"
-            @click="actStockFavoriteCreate(formData.code), mtdDialog(false)"
+            @click="actStockFavoriteCreate(formData.code)"
             :disabled="!validate"
           >
             加入自選

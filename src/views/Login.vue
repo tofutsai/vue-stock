@@ -78,7 +78,7 @@
             color="cyan"
             outlined
             :disabled="!registervalidate"
-            @click="actStockRegister()"
+            @click="actStockRegister(), mtdDialog(false)"
           >
             確認
           </v-btn>

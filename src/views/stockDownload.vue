@@ -29,7 +29,7 @@
                 </v-col>
                 <v-col cols="8" md="8" class="text-h6">
                   <div>最後更新</div>
-                  <div>{{ gridConfig.data[0].nowDate | formatDate }}</div>
+                  <div>{{ gridConfig.data[0].stockUpdate | formatDate }}</div>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -62,7 +62,7 @@
                 </v-col>
                 <v-col cols="8" md="8" class="text-h6">
                   <div>最後更新</div>
-                  <div>{{ gridConfig.data[0].nowDate | formatDate }}</div>
+                  <div>{{ gridConfig.data[0].otcUpdate | formatDate }}</div>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -145,7 +145,7 @@
             <v-card-actions class="justify-center pt-4 pb-5">
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" text @click="mtdDialog(true)">
+                  <v-btn v-bind="attrs" v-on="on" text @click="actStockSysConfigRead(),mtdDialog(true)">
                     <v-icon style="font-size:36px">mdi-cog-box</v-icon>
                   </v-btn>
                 </template>

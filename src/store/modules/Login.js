@@ -30,6 +30,9 @@ const actions = {
   actInit({ commit }) {
     commit("mutInit");
   },
+  actInitFormData({ commit }){
+    commit("mutInitFormData");
+  },
   actGetUser({ commit }, payload) {
     commit("mutGetUser", payload);
   },
@@ -61,6 +64,7 @@ const actions = {
       console.log("/api/Register", res.data);
       if (res.data.Success) {
         PG.setSnackBar(res.data.Message, "success");
+        actions.actInitFormData({commit});
       } else {
         PG.setSnackBar(res.data.Message);
       }
@@ -72,9 +76,12 @@ const mutations = {
   mutInit(state) {
     state.formData = JSON.parse(JSON.stringify(state.init.formData));
     state.user = JSON.parse(JSON.stringify(state.init.user));
-    sessionStorage.removeItem("UserInfo")
-    const UserInfo = JSON.parse(sessionStorage.getItem("UserInfo"));
-    console.log(UserInfo);
+    sessionStorage.removeItem("UserInfo");
+  },
+  mutInitFormData(state){
+    state.formData.registerAccount = JSON.parse(JSON.stringify(state.init.formData.registerAccount));
+    state.formData.registerPassword = JSON.parse(JSON.stringify(state.init.formData.registerPassword));
+    state.formData.registerName = JSON.parse(JSON.stringify(state.init.formData.registerName));
   },
   mutGetUser(state, UserInfo) {
     state.user.OperAccount = UserInfo.OperAccount;

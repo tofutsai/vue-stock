@@ -8,7 +8,7 @@ var instance = axios.create({
   },
   url: "/",
   method: "post",
-  baseURL: 'https://localhost:44313/',
+  baseURL: 'http://tofutsai-001-site1.htempurl.com/',
   timeout: 180000,
 });
 //設置 request 的攔截器，放入兩個函式做為參數。

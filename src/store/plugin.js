@@ -63,17 +63,6 @@ const Plugin = {
     }
     return value;
   },
-  formatDatedash(value, split = "-") {
-    if (value && value != "0") {
-      let d = moment(value).format(`YYYY${split}MM${split}DD`);
-      if (d != "Invalid date") value = d;
-    }
-
-    if (value == "00000000") {
-      value = "0000-00-00";
-    }
-    return value;
-  },
   formatDatetoMD(value, split = "/") {
     if (value && value != "0") {
       let d = moment(value).format(`MM${split}DD`);
