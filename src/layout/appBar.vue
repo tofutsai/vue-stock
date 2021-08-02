@@ -45,6 +45,14 @@
       </template>
       <span>你好 {{ PG.getOper().OperName }}</span>
     </v-tooltip>
+    <v-tooltip top>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn text class="amber--text" v-bind="attrs" v-on="on" @click="PG.setPassword(true)">
+          修改密碼
+        </v-btn>
+      </template>
+      <span>修改密碼</span>
+    </v-tooltip>
     <!-- 登出位置 -->
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">

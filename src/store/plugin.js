@@ -147,6 +147,9 @@ const Plugin = {
   setProgressBar(status) {
     global.state.progressBar.isOpen = status;
   },
+  setPassword(status) {
+    global.state.editPassword.isOpen = status;
+  },
   fixHeightPx(v) {
     if (v) {
       var h = window.innerHeight;

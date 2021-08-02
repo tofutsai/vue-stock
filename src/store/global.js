@@ -55,6 +55,9 @@ const state = {
   progressBar: {
     isOpen: false,
   },
+  editPassword: {
+    isOpen: false,
+  }
 };
 
 const getters = {};
