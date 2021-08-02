@@ -9,6 +9,7 @@
     <v-main>
       <progressBar />
       <overlay />
+      <editPassword />
       <v-container fluid>
         <router-view />
       </v-container>
@@ -25,6 +26,7 @@ import snackBar from "@/layout/snackBar.vue";
 import navigation from "@/layout/navigation.vue";
 import progressBar from "@/layout/progressBar.vue";
 import overlay from "@/layout/overlay.vue";
+import editPassword from "@/layout/editPassword.vue";
 export default {
   data: () => ({}),
   components: {
@@ -36,6 +38,7 @@ export default {
     navigation,
     progressBar,
     overlay,
+    editPassword,
   },
 };
 </script>
