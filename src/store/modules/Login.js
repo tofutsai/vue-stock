@@ -42,8 +42,8 @@ const actions = {
   actStockLogin({ commit }) {
     const f = state.formData;
 
-    axiosAPI.instance.post("/api/Login", f).then((res) => {
-      console.log("/api/Login", res.data);
+    axiosAPI.instance.post("/api/StockMember/Login", f).then((res) => {
+      console.log("/api/StockMember/Login", res.data);
       if (res.data.Success) {
         PG.setSnackBar(res.data.Message, "success");
         sessionStorage.setItem("UserInfo", JSON.stringify(res.data.Data));
@@ -60,8 +60,8 @@ const actions = {
     f.account = state.formData.registerAccount;
     f.password = state.formData.registerPassword;
     f.name = state.formData.registerName;
-    axiosAPI.instance.post("/api/Register", f).then((res) => {
-      console.log("/api/Register", res.data);
+    axiosAPI.instance.post("/api/StockMember/Register", f).then((res) => {
+      console.log("/api/StockMember/Register", res.data);
       if (res.data.Success) {
         PG.setSnackBar(res.data.Message, "success");
         actions.actInitFormData({commit});

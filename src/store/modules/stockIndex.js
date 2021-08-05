@@ -53,9 +53,9 @@ const actions = {
     f.options = state.grid.options;
 
     axiosAPI.instance
-      .post("/api/ReadStockIndex", f)
+      .post("/api/StockIndex/Read", f)
       .then((res) => {
-        console.log("/api/ReadStockIndex", res.data);
+        console.log("/api/StockIndex/Read", res.data);
         if (res.data.Success) {
           commit("mutGrid", res.data);
         } else {
@@ -74,9 +74,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
     if (PG.getOper().OperIsAdmin) {
       axiosAPI.instance
-        .post("/api/CreateStockIndex", f)
+        .post("/api/StockIndex/Create", f)
         .then((res) => {
-          console.log("/api/CreateStockIndex", res.data);
+          console.log("/api/StockIndex/Create", res.data);
           if (res.data.Success) {
             PG.setSnackBar(res.data.Message, "success");
             actions.actStockIndexRead({ commit });
@@ -96,9 +96,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
     if (PG.getOper().OperIsAdmin) {
       axiosAPI.instance
-        .post("/api/EditStockIndex", f)
+        .post("/api/StockIndex/Edit", f)
         .then((res) => {
-          console.log("/api/EditStockIndex", res.data);
+          console.log("/api/StockIndex/Edit", res.data);
           if (res.data.Success) {
             PG.setSnackBar(res.data.Message, "success");
             actions.actStockIndexRead({ commit });
@@ -120,9 +120,9 @@ const actions = {
         const f = { id: payload.id };
   
         axiosAPI.instance
-          .post("/api/DeleteStockIndex", f)
+          .post("/api/StockIndex/Delete", f)
           .then((res) => {
-            console.log("/api/DeleteStockIndex", res.data);
+            console.log("/api/StockIndex/Delete", res.data);
             if (res.data.Success) {
               PG.setSnackBar(res.data.Message, "success");
               actions.actStockIndexRead({ commit });

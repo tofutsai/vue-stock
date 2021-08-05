@@ -111,9 +111,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
-      .post("/api/ReadStockFavorite", f)
+      .post("/api/StockFavorite/Read", f)
       .then((res) => {
-        console.log("/api/ReadStockFavorite", res.data);
+        console.log("/api/StockFavorite/Read", res.data);
         if (res.data.Success) {
           commit("mutGrid", res.data);
         } else {
@@ -133,9 +133,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
-      .post("/api/CreateStockFavorite", f)
+      .post("/api/StockFavorite/Create", f)
       .then((res) => {
-        console.log("/api/ReadStockFavorite", res.data);
+        console.log("/api/StockFavorite/Create", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockFavoriteRead({ commit });
@@ -153,9 +153,9 @@ const actions = {
     f.id = payload.id;
     f.memo = payload.memo;
     axiosAPI.instance
-      .post("/api/EditStockFavorite", f)
+      .post("/api/StockFavorite/Edit", f)
       .then((res) => {
-        console.log("/api/EditStockFavorite", res.data);
+        console.log("/api/StockFavorite/Edit", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockFavoriteRead({ commit });
@@ -172,7 +172,7 @@ const actions = {
       const f = { id: payload.id };
       f.operId = PG.getOper().OperId;
       axiosAPI.instance
-        .post("/api/DeleteStockFavorite", f)
+        .post("/api/StockFavorite/Delete", f)
         .then((res) => {
           if (res.data.Success) {
             PG.setSnackBar(res.data.Message, "success");
@@ -192,9 +192,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
-      .post("/api/CreateStockProfit", f)
+      .post("/api/StockProfit/Create", f)
       .then((res) => {
-        console.log("/api/CreateStockProfit", res.data);
+        console.log("/api/StockProfit/Create", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockProfitRead({ commit });
@@ -212,9 +212,9 @@ const actions = {
     f.code = payload;
     f.dataDate = PG.getNowDate(-3, "M"),
       axiosAPI.instance
-        .post("/api/ReadStockData", f)
+        .post("/api/StockData/Read", f)
         .then((res) => {
-          console.log("/api/ReadStockData", res.data);
+          console.log("/api/StockData/Read", res.data);
           if (res.data.Success) {
             commit("mutChartData", res.data);
           } else {
@@ -239,6 +239,7 @@ const mutations = {
   },
   mutInitChartData(state) {
     state.chartData = JSON.parse(JSON.stringify(state.init.chartData));
+    state.formData = JSON.parse(JSON.stringify(state.init.formData));
   },
   mutStockFavoriteSet(state, payload) {
     state.formData = JSON.parse(JSON.stringify(payload));

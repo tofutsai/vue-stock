@@ -46,9 +46,9 @@ const actions = {
     f.options = state.grid.options;
 
     axiosAPI.instance
-      .post("/api/ReadSysLog", f)
+      .post("/api/StockSysLog/Read", f)
       .then((res) => {
-        console.log("/api/ReadSysLog", res.data);
+        console.log("/api/StockSysLog/Read", res.data);
         if (res.data.Success) {
           commit("mutGrid", res.data);
         } else {

@@ -55,9 +55,9 @@ const actions = {
     const f = state.formData;
     if(PG.getOper().OperIsAdmin){
       axiosAPI.instance
-      .post("/api/DownloadStockData")
+      .post("/api/StockDownload/DownloadStockData")
       .then((res) => {
-        console.log("/api/DownloadStockData", res.data);
+        console.log("/api/StockDownload/DownloadStockData", res.data);
         if (res.data.Success) {
           if(res.data.Message == ""){
             PG.setAlert("已更新至最新日期", "success");
@@ -82,9 +82,9 @@ const actions = {
     const f = state.formData;
     if(PG.getOper().OperIsAdmin){
       axiosAPI.instance
-      .post("/api/DownloadOtcData")
+      .post("/api/StockDownload/DownloadOtcData")
       .then((res) => {
-        console.log("/api/DownloadStockData", res.data);
+        console.log("/api/StockDownload/DownloadOtcData", res.data);
         if (res.data.Success) {
           if(res.data.Message == ""){
             PG.setAlert("已更新至最新日期", "success");
@@ -109,9 +109,9 @@ const actions = {
     const f = state.formData;
     if(PG.getOper().OperIsAdmin){
       axiosAPI.instance
-      .post("/api/ComputeStockAvg")
+      .post("/api/StockCompute/ComputeStockAvg")
       .then((res) => {
-        console.log("/api/ComputeStockAvg", res.data);
+        console.log("/api/StockCompute/ComputeStockAvg", res.data);
         if (res.data.Success) {
           PG.setAlert(res.data.Message, "success");
           actions.actInitFormData({ commit });
@@ -132,9 +132,9 @@ const actions = {
 
     if(PG.getOper().OperIsAdmin){
       axiosAPI.instance
-      .post("/api/ComputeStockNow")
+      .post("/api/StockCompute/ComputeStockNow")
       .then((res) => {
-        console.log("/api/ComputeStockNow", res.data);
+        console.log("/api/StockCompute/ComputeStockNow", res.data);
         if (res.data.Success) {
           PG.setAlert(res.data.Message, "success");
           actions.actInitFormData({ commit });
@@ -160,9 +160,9 @@ const actions = {
     //}
     state.gridConfig.data = [{}];
     axiosAPI.instance
-      .post("/api/ReadSysConfig")
+      .post("/api/StockSysConfig/Read")
       .then((res) => {
-        console.log("/api/ReadSysConfig", res.data);
+        console.log("/api/StockSysConfig/Read", res.data);
         if (res.data.Success) {
           commit("mutGridConfig", res.data);
         } else {
@@ -178,9 +178,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
     if(PG.getOper().OperIsAdmin){
       axiosAPI.instance
-      .post("/api/EditSysConfig", f)
+      .post("/api/StockSysConfig/Edit", f)
       .then((res) => {
-        console.log("/api/EditSysConfig", res.data);
+        console.log("/api/StockSysConfig/Edit", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockSysConfigRead({ commit });
@@ -203,7 +203,7 @@ const actions = {
     f.operId = PG.getOper().OperId;
     if(PG.getOper().OperIsAdmin){
       axiosAPI.instance
-      .post("/api/StockMemo", f)
+      .post("/api/StockMemo/Create", f)
       .then((res) => {
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");

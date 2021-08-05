@@ -50,11 +50,10 @@ const actions = {
     state.grid.data = [{}];
     const f = state.formSearch;
     f.options = state.grid.options;
-
     axiosAPI.instance
-      .post("/api/ReadStockData", f)
+      .post("/api/StockData/Read", f)
       .then((res) => {
-        console.log("/api/ReadStockData", res.data);
+        console.log("/api/StockData/Read", res.data);
         if (res.data.Success) {
           commit("mutGrid", res.data);
         } else {

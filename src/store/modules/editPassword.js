@@ -23,9 +23,9 @@ const actions = {
     const UserInfo = JSON.parse(sessionStorage.getItem("UserInfo"));
     f.OperId = UserInfo.OperId;
     axiosAPI.instance
-      .post("/api/EditPassword", f)
+      .post("/api/StockMember/EditPassword", f)
       .then((res) => {
-        console.log("/api/EditPassword", res.data);
+        console.log("/api/StockMember/EditPassword", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
         } else {

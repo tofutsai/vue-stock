@@ -114,6 +114,7 @@
           ma-0
           color="cyan darken-2"
           @click="actStockIndexSet(item), mtdDialog(true), (action = 'Edit')"
+          v-show="item.code != null"
         >
           <span>
             {{ item.code }}
@@ -126,7 +127,7 @@
         </span>
       </template>
       <template v-slot:[`item.isEnable`]="{ item }">
-        <v-checkbox v-model="item.isEnable" readonly></v-checkbox>
+        <v-checkbox v-model="item.isEnable" readonly v-show="item.code != null"></v-checkbox>
       </template>
     </v-data-table>
 

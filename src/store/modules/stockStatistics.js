@@ -132,9 +132,9 @@ const actions = {
     f.options = state.grid.options;
 
     axiosAPI.instance
-      .post("/api/ReadStockStatistics", f)
+      .post("/api/StockStatistics/Read", f)
       .then((res) => {
-        console.log("/api/ReadStockStatistics", res.data);
+        console.log("/api/StockStatistics/Read", res.data);
         if (res.data.Success) {
           commit("mutGrid", res.data);
         } else {
@@ -149,9 +149,9 @@ const actions = {
     
     state.gridConfig.data = [{}];
     axiosAPI.instance
-      .post("/api/ReadSysConfig")
+      .post("/api/StockSysConfig/Read")
       .then((res) => {
-        console.log("/api/ReadSysConfig", res.data);
+        console.log("/api/StockSysConfig/Read", res.data);
         if (res.data.Success) {
           commit("mutGridConfig", res.data);
         } else {
@@ -230,9 +230,9 @@ const actions = {
     f.operId = PG.getOper().OperId;
 
     axiosAPI.instance
-      .post("/api/CreateStockProfit", f)
+      .post("/api/StockProfit/Create", f)
       .then((res) => {
-        console.log("/api/CreateStockProfit", res.data);
+        console.log("/api/StockProfit/Create", res.data);
         if (res.data.Success) {
           PG.setSnackBar(res.data.Message, "success");
           actions.actStockProfitRead({ commit });
@@ -250,9 +250,9 @@ const actions = {
     f.code = payload;
     f.dataDate = PG.getNowDate(-3, "M"),
       axiosAPI.instance
-        .post("/api/ReadStockData", f)
+        .post("/api/StockData/Read", f)
         .then((res) => {
-          console.log("/api/ReadStockData", res.data);
+          console.log("/api/StockData/Read", res.data);
           if (res.data.Success) {
             commit("mutChartData", res.data);
           } else {
