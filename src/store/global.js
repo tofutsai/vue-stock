@@ -27,6 +27,10 @@ const state = {
         {title : "系統Log", path:"/stockSysLog"}
       ],
     },
+    {
+      tab: { title: "SignalR", path:"/signalR", icon: "mdi-view-dashboard"},
+      items: [],
+    }
   ],
   alert: {
     isOpen: false,

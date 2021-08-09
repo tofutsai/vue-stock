@@ -11,6 +11,7 @@ import stockStatistics from "@/views/stockStatistics.vue";
 import stockProfit from "@/views/stockProfit.vue";
 import login from "@/views/Login.vue";
 import stockSysLog from "@/views/stockSysLog.vue";
+import signalR from "@/views/signalR.vue";
 
 Vue.use(VueRouter);
 
@@ -74,6 +75,11 @@ const routes = [
     path: "/stockSysLog",
     name: "stockSysLog",
     component: stockSysLog,
+  },
+  {
+    path: "/signalR",
+    name: "signalR",
+    component: signalR,
   }
 ];
 
